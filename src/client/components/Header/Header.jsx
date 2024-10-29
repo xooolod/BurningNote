@@ -15,8 +15,8 @@ const Header = () => {
         <EmojiProvider data={emojiData}>
             <div className="header">
                 <Navbar bg="dark" data-bs-theme="dark">
-                    <Container>
-                    <Navbar.Brand href="#home"><Emoji name={'fire'} height={24} /> Burning Notes</Navbar.Brand>
+                    <Container fluid className="h-100">
+                    <Navbar.Brand href="/"><Emoji name={'fire'} height={24} /> Burning Notes</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="https://github.com/xooolod/BurningNote"><Icon.Github size={16} className="navbar-icon"/> Github</Nav.Link>
                     </Nav>

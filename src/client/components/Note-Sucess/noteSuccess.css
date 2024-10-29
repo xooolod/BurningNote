@@ -1,0 +1,25 @@
+.note {
+    min-height: 100vh;
+    background-color: rgb(22, 22, 22);
+}
+
+.note-details {
+    text-align: center;
+    color: white;
+    padding-top: 8%;
+    background-color: rgb(22, 22, 22);
+    height: 100%;
+    width: 100%;
+    padding-bottom: 15%;
+}
+
+.create-button {
+    margin: 5px;
+}
+
+.note-link {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #131313;
+    padding: 10px 0;
+	box-shadow: -10px 0 0 #131313, 10px 0 0 #131313;
+}

@@ -13,7 +13,8 @@ export default {
   entry: ["core-js/stable", "regenerator-runtime/runtime", "./src/client/index.js"],
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: "bundle.js"
+    filename: "bundle.js",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -51,6 +52,7 @@ export default {
   devServer: {
     port: 3000,
     open: false,
+    historyApiFallback: true,
     proxy: [
       {
         context: ["/api"],
