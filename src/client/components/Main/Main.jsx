@@ -9,7 +9,7 @@ import emojiData from "react-apple-emojis/src/data.json";
 import './main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Main = () => {
+const Main = React.memo(() => {
     /**
      * React state to store note text value
      */
@@ -90,6 +90,6 @@ const Main = () => {
             </div>
         </EmojiProvider>
     );
-};
+});
 
 export default Main;

@@ -12,7 +12,7 @@ import "./noteSuccess.css";
  * Page to display when user successfully created the note
  */
 
-const NoteSuccess = () => {
+const NoteSuccess = React.memo(() => {
     const { link } = useParams(); // Getting link from URL parameters
 
     /**
@@ -102,6 +102,6 @@ const NoteSuccess = () => {
             </EmojiProvider>
         </div>
     );
-};
+});
 
 export default NoteSuccess;

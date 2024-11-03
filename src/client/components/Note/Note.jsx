@@ -8,7 +8,7 @@ import emojiData from "react-apple-emojis/src/data.json"
 
 import "./note.css";
 
-const Note = () => {
+const Note = React.memo(() => {
     const { link } = useParams(); // Retrieve link from URL parameters
     const [noteData, setNoteData] = useState(null); // state for note data
     const [loading, setLoading] = useState(true); // state for loading process
@@ -88,6 +88,6 @@ const Note = () => {
             </EmojiProvider>
         </div>
     );
-};
+});
 
 export default Note;

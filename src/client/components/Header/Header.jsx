@@ -10,7 +10,7 @@ import emojiData from "react-apple-emojis/src/data.json"
 import './header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const Header = () => {
+const Header = React.memo(() => {
     return (
         <EmojiProvider data={emojiData}>
             <div className="header">
@@ -25,6 +25,6 @@ const Header = () => {
             </div>
         </EmojiProvider>
     );
-};
+});
 
 export default Header;
