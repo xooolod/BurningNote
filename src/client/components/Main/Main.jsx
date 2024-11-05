@@ -31,6 +31,10 @@ const Main = React.memo(() => {
             return;
         }
 
+        if(noteText.length > 1024) {
+            alert("Your note length exceeds the limit of 1024 characters.");
+        }
+
         try {
             /**
              * POST request to the server to create a note
@@ -49,7 +53,6 @@ const Main = React.memo(() => {
             }
 
             const data = await response.json();
-            console.log('Note created:', data);
             setNoteText('');
 
             if (data) {

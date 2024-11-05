@@ -16,7 +16,7 @@ import { existsSync, mkdirSync } from 'fs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const databaseDir = resolve(__dirname, 'database');
+const databaseDir = resolve(__dirname, '../database');
 const databaseFile = join(databaseDir, 'database.sqlite');
 
 /**
@@ -54,7 +54,7 @@ const initializeDatabase = (logger) => {
      * Check if table exists. If not, new table will be created.
      */
 
-    database.get("SELECT name FROM sqlite_master WHERE type='table' AND name='notes'", (err, row) => {
+    database.get("SELECT `name` FROM `sqlite_master` WHERE type='table' AND name='notes'", (err, row) => {
         if (err) {
             logger.error(err.message);
             return;

@@ -56,7 +56,7 @@ export default {
     proxy: [
       {
         context: ["/api"],
-        target: "http://0.0.0.0:8000"
+        target: "http://localhost:8000"
       }
     ],
   },

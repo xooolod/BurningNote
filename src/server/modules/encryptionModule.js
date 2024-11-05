@@ -2,6 +2,14 @@ import crypto from "crypto";
 
 const ALGORITHM = "aes-256-cbc";
 
+/**
+ * Function that encrypts a string with aes-256-cbc algorithm
+ * and then returns an Object with initialization vector,
+ * key and encrypted string
+ * @param {String} text a string to be encrypted
+ * @returns {Object} Initialization vector, key, encrypted string
+ */
+
 const encrypt = (text) => {
     const key = crypto.randomBytes(32);
     const iv = crypto.randomBytes(16);
@@ -16,6 +24,16 @@ const encrypt = (text) => {
         encryptedData: encrypted
     };
 }
+
+/**
+ * Same function as the encryption one but this
+ * one just decrypts the string using encrypted string,
+ * key and IV
+ * @param {String} encryptedData encrypted string
+ * @param {String} key Key 
+ * @param {String} iv IV 
+ * @returns {String} decrypted string
+ */
 
 const decrypt = (encryptedData, key, iv) => {
     const decipher = crypto.createDecipheriv(ALGORITHM, Buffer.from(key, 'hex'), Buffer.from(iv, 'hex'));

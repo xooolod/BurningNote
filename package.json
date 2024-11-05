@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "name": "burning-note",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple application that allows you to create one-time notes. Have some secrets to tell to your friends? Go ahead and then just BURN it! >:)",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,8 @@
     "server": "nodemon src/server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "npm run build",
-    "start": "node src/server/index.js"
+    "start": "node src/server/index.js",
+    "test-api": "mocha ./src/tests/UI"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@babel/polyfill": "^7.12.1",
     "babel": "^6.23.0",
     "bootstrap": "^5.3.3",
+    "chai": "^5.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "compression": "^1.7.5",
     "concurrently": "^9.0.1",
@@ -45,7 +47,9 @@
     "react-bootstrap-icons": "^1.11.4",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
+    "sinon": "^19.0.2",
     "sqlite3": "^5.1.7",
+    "testing-library": "^0.0.2",
     "webpack": "^5.96.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
