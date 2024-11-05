@@ -16,14 +16,17 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
+import helmet from "helmet";
+import compression from "compression";
 import { fileURLToPath } from 'url';
 
 
 import { initializeLogger } from "./winston.js";
 import { initializeDatabase } from "./databaseCheck.js";
 import { generateLink } from "./generateLink.js";
+import { encrypt, decrypt } from "./encryptionModule.js";
 
-dotenv.config({ path: "../../.env", encoding: "UTF-8" });
+dotenv.config({ path: "./.env", encoding: "UTF-8" });
 
 /**
  * Winston logger configuration
@@ -43,6 +46,13 @@ const database = initializeDatabase (logger);
 
 const app = express();
 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const APP_PORT = process.env.PORT || 8000;
+
+
 /**
  * Of course, CORS! :)
  * Allowing our front-end side to send requests to the server
@@ -50,18 +60,13 @@ const app = express();
 
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? 'https://burning-note-220ef495fdb9.herokuapp.com' : `http://localhost:${process.env.PORT}`, 
-    methods: 'GET,POST', 
+    methods: 'GET,POST,PUT,DELETE', 
     credentials: true, 
 }));
-
 app.use(express.json()); 
-
-const APP_PORT = process.env.PORT || 8000;
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 app.use(express.static(path.join(__dirname, '..', '..', 'dist')));
+app.use(helmet());
+app.use(compression());
 
 
 /**
@@ -71,8 +76,6 @@ app.use(express.static(path.join(__dirname, '..', '..', 'dist')));
 
 app.get("/api/getNote/:link", async (req, res) => {
     const noteLink = req.params.link;
-
-    logger.info(req.params.link);
 
     database.get("SELECT * FROM `notes` WHERE `link` = ? LIMIT 1", [noteLink], (error, row) => {
         if (error) {
@@ -84,9 +87,10 @@ app.get("/api/getNote/:link", async (req, res) => {
             return res.status(404).json({ message: "Note not found! Probably it was burned already. Sorry, mate! :(" });
         } else {
             /**
-             * Returning the note data back to the user
+             * Decrypting the text of the note and returning the note data back to the user
              */
-
+            
+            row.text = decrypt(row.text, row.key, row.iv);
             res.json(row);
         }
     });
@@ -96,13 +100,20 @@ app.get("/api/getNote/:link", async (req, res) => {
  * Creates a note
  */
 
-app.post("/api/create-note/", (req, res) => {
+app.post("/api/create-note/", async (req, res) => {
     const randomLink = generateLink();
     const noteText = req.body.text;
+
+    /**
+     * Encrypting note text and link to store it in database
+     */
+
+    const { iv, key, encryptedData } = await encrypt(noteText);
     
-    database.run("INSERT INTO `notes` (text, link) VALUES (?, ?)", [noteText, randomLink], (error) => {
+    await database.run("INSERT INTO `notes` (text, link, iv, key) VALUES (?, ?, ?, ?)", [encryptedData, randomLink, iv, key], (error) => {
         if (error) {
             logger.error(error);
+            return res.status(500).json({ message: "Internal server error." });
         } else {
             logger.info("New note has been created.");
         }
@@ -123,10 +134,11 @@ app.post("/api/create-note/", (req, res) => {
 
 app.post("/api/burn-note/", (req, res) => {
     const noteLink = req.body.link;
-    
+
     database.run("DELETE FROM `notes` WHERE `link` = ?", [noteLink], (error) => {
         if (error) {
             logger.error(error);
+            return res.status(500).json({ message: "Internal server error." });
         } else {
             logger.info(`Note ${noteLink} has been read and deleted.`);
         }
@@ -138,7 +150,11 @@ app.post("/api/burn-note/", (req, res) => {
  */
 
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', '..', 'dist', 'index.html'));
+    try {
+        res.sendFile(path.join(__dirname, '..', '..', 'dist', 'index.html'));
+    } catch(error) {
+        logger.error(error);
+    }
 });
 
 app.listen(APP_PORT, () => logger.info(`Server started and ready to process some notes! Port: ${APP_PORT}`));

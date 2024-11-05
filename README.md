@@ -4,8 +4,14 @@
 **Share your secret notes with BurningNote app!**
 BurningNote allows you to create one-time notes. Once you have written your note, the app will generate a unique link for your note. You can share the link to anyone, but please pay attention: the note will be burned as soon as someone reads it!
 
-- **Demo**: [Preview on Heroku](https://burning-note-220ef495fdb9.herokuapp.com/)
+## Features
 
+- Note encrypting: double safety for you!
+
+
+# 🧑‍🔬 | Demo
+
+- **Demo**: [Preview on Heroku](https://burning-note-220ef495fdb9.herokuapp.com/)
 
 # 🧪 | Geek stuff: Run your own instance 
 

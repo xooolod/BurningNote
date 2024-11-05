@@ -66,7 +66,9 @@ const initializeDatabase = (logger) => {
             database.run(`CREATE TABLE "notes" (
                 "id" INTEGER PRIMARY KEY AUTOINCREMENT,
                 "text" TEXT,
-                "link" TEXT
+                "link" TEXT,
+                "iv" TEXT,
+                "key" TEXT
             )`, (error) => {
                 if (error) {
                     logger.error(error.message);
