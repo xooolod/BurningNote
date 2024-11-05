@@ -84,7 +84,16 @@ app.use(loggerMiddleware(logger));
 app.use(databaseMiddleware(database));
 app.use(express.json()); 
 app.use(express.static(path.join(__dirname, '..', '..', 'dist')));
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                defaultSrc: ["'self'"],
+                imgSrc: ["'self'", "https://em-content.zobj.net", "data:"],
+            },
+        },
+    })
+);
 app.use(compression());
 
 app.use((req, res, next) => {
